@@ -1,0 +1,70 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>ArisGlobal</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href='{% static "images/icons/metalogo.png" %}'/>
+
+</head>
+<body>	
+
+<div class="container">
+	<div class="page-header">
+		<a style="float:right;" href="/logout/"><i class="fas fa-sign-out-alt"></i>LOGOUT</a>
+		<p style="float:right;">Welcome : <span class="glyphicon glyphicon-user"></span> {{user}} &nbsp &nbsp </p>
+		<h1><i class="fas fa-cog"></i>DASHBOARD</h1>
+	</div>
+	<div class="row">
+	<a style="float:right;" href="/StatusAdmin/upcomingList/"><i class="fas fa-thumbtack"></i> Add Upcoming Projects</a><br/><br/>
+	</div>
+	 <div class="row">
+	 <div class="col-sm-4">
+	<div class="panel panel-default">
+		<div class="panel-heading">QC Status</div>
+		<div class="panel-body">
+			<ul class="nav nav-pills nav-stacked">
+				<li><a href="/StatusAdmin/QcProject/"><i class="fas fa-thumbtack"></i> Projects</a></li>
+				<!-- <li><a href="/createprojectQC/"><i class="fas fa-thumbtack"></i> Create QC Project</a></li> -->
+				<!-- <li><a href="/Qcform/"><i class="fas fa-thumbtack"></i> Post Today's QC Status</a></li> -->
+				<li><a href="/StatusAdmin/QcProjectStatus/"><i class="fas fa-thumbtack"></i> Update Status<!-- <small> (In case of correction)</small> --></a></li>
+			</ul>
+		</div>
+	</div>
+	</div>
+	<div class="col-sm-4">
+	<div class="panel panel-default">
+		<div class="panel-heading">PQ Status</div>
+		<div class="panel-body">
+			<ul class="nav nav-pills nav-stacked">
+				 <li><a href="/StatusAdmin/PqProject/"><i class="fas fa-thumbtack"></i> Projects </a></li>
+				 <!-- <li><a href="/createprojectPQ/"><i class="fas fa-thumbtack"></i> Create PQ Project</a></li> -->
+				 <li><a href="/StatusAdmin/PqProjectStatus/"><i class="fas fa-thumbtack"></i> Update Status</a></li>
+				 <!-- <li><a href="/Pqform/"><i class="fas fa-thumbtack"></i> Update PQ Status</a></li> -->
+			</ul>
+		</div>
+	</div>
+	</div>
+	<div class="col-sm-4">
+	<div class="panel panel-default">
+		<div class="panel-heading">Automation Status</div>
+		<div class="panel-body">
+			<ul class="nav nav-pills nav-stacked">
+				 <li><a href="/StatusAdmin/AutomationProject/"><i class="fas fa-thumbtack"></i> Projects</a></li>
+				 <!-- <li><a href="/createprojectAuto/"><i class="fas fa-thumbtack"></i> Create Automation Project</a></li> -->
+				 <li><a href="/StatusAdmin/AutoProjectStatus/"><i class="fas fa-thumbtack"></i> Update Status</a></li>
+				 <!-- <li><a href="/Automationform/"><i class="fas fa-thumbtack"></i> Update Automation Status</a></li> -->
+			</ul>
+		</div>
+	</div>
+	</div>
+  </div>
+</div>
+</body>
+</html>

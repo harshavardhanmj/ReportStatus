@@ -1,0 +1,139 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>ArisGlobal</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href='{% static "images/icons/metalogo.png" %}'/>
+<style>
+.center {
+    margin: auto;
+    width: 25%;
+    
+    padding: 10px;
+}
+.errorlist {
+    list-style: none;
+}
+</style>
+<script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+var csrftoken = getCookie('csrftoken');
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+$(document).ready(function(){
+    var $myForm = $('.my-ajax-form')
+    $myForm.submit(function(event){
+        event.preventDefault()
+        var $formData = $(this).serialize()
+        var $thisURL = $myForm.attr('data-url') || window.location.href // or set your own url
+        $.ajax({
+            method: "POST",
+            url: $thisURL,
+            data: $formData,
+            success: handleFormSuccess,
+            error: handleFormError,
+        })
+    })
+
+    function handleFormSuccess(data, textStatus, jqXHR){
+        console.log(data)
+        console.log(textStatus)
+        console.log(jqXHR)
+        $myForm[0].reset(); // reset form data
+    }
+
+    function handleFormError(jqXHR, textStatus, errorThrown){
+        console.log(jqXHR)
+        console.log(textStatus)
+        console.log(errorThrown)
+    }
+})
+</script>
+</head>
+<body>	
+	<div class="container">
+		<div class="page-header">
+			<a style="float:right;" href="/StatusAdmin/"><i class="fas fa-home"></i>HOME</a>
+			<h2>CREATE {{name}} PROJECT</h2>
+		</div>
+	</div>
+		<div class="center">
+				<form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+					<div class="form-group">
+					  <label for="ProductName">Product Name with version:</label>
+					  <input type="text" class="form-control" id="ProductName" placeholder="Enter Product with version as in Jira " name="ProductName" required>
+					</div>
+					{% if form.errors.ProductName %}
+					<div class="alert alert-danger">
+					<strong>{{form.errors.ProductName}}</strong>
+					</div>
+					{% endif %}
+					<!-- <div class="form-group">
+					  <label for="ReleaseVersion">Release Version:</label>
+					  <input type="text" class="form-control" id="ReleaseVersion" placeholder="Enter Release Version" name="ReleaseVersion">
+					</div> -->
+					<div class="form-group">
+					  <label for="PlanStartDate">Plan Start Date:</label>
+					  <input type="date" class="form-control" id="PlanStartDate" placeholder="Select Plan Start Date" name="PlanStartDate" required>
+					</div>
+					<div class="form-group">
+					  <label for="PlanEndDate">Plan End Date:</label>
+					  <input type="date" class="form-control" id="PlanEndDate" placeholder="Select Plan End Date" name="PlanEndDate" required>
+					</div>
+					{% if form.non_field_errors %}
+					<div class="alert alert-danger">
+					<strong>Please Enter Valid dates!</strong>
+					</div>
+					{% endif %}
+					<div class="form-group">
+					  <label for="ProductStatus">Product Status:</label>
+					  <select class="form-control" id="ProductStatus" name="ProductStatus">
+						<option>Active</option>
+						<option>Inactive</option>
+					  </select>
+					</div>
+					<div class="form-group">
+					  <label for="Remarks">Remarks:</label>
+					  <input type="text" class="form-control" id="Remarks" placeholder="Enter Remarks" name="Remarks">
+					</div>
+					<button type="submit" class="btn btn-success">Create</button>
+					<!-- <input type="submit" value="submit" /> -->
+				</form>
+			
+		</div>
+		
+	
+</body>
+</html>

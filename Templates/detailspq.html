@@ -1,0 +1,639 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Test Status Report</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href='{% static "images/icons/metalogo.png" %}'/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href='{% static "vendor/bootstrap/css/bootstrap.min.css" %}'>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href='{% static "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}'>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href='{% static "vendor/animate/animate.css" %}'>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href='{% static "vendor/select2/select2.min.css" %}'>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href='{% static "vendor/perfect-scrollbar/perfect-scrollbar.css" %}'>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href='{% static "css/util.css" %}'>
+	<link rel="stylesheet" type="text/css" href='{% static "css/main.css" %}'>
+<!--===============================================================================================-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+<style>
+img  {
+    float: left;
+	opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+</style>
+</head>
+<body>	
+	<div class="limiter">
+		<div class="container-table100">
+			<div class="wrap-table100">
+				<div class="table100 ver1 m-b-110">
+					<a href="/"><button class="btn btn-info" style="float:right;padding: 3px 32px;">Back <i class="fas fa-arrow-left"></i></button></a>
+					<h3 align="center" style="font-family:Montserrat-Regular">Project : <b><u style="color:black">{{project}}</u></b> </h3><br/><br/>
+					<table data-vertable="ver1">
+						<thead>
+							<tr class="row100 head">
+								<th class="column100 column1" data-column="column1">Resolution</th>
+								<th class="column100 column2" data-column="column2">Minor</th>
+								<th class="column100 column3" data-column="column3">Major</th>
+								<th class="column100 column4" data-column="column4">Critical</th>
+								<th class="column100 column5" data-column="column5">Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Open</td>
+								<td class="column100 column2" data-column="column2">{{openMinor}}</td>
+								<td class="column100 column3" data-column="column3">{{openMajor}}</td>
+								<td class="column100 column4" data-column="column4">{{openCritical}}</td>
+								<td class="column100 column5" data-column="column5">{{openIssues}}</td>
+							</tr>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Resolved</td>
+								<td class="column100 column2" data-column="column2">{{resolvedMinor}}</td>
+								<td class="column100 column3" data-column="column3">{{resolvedMajor}}</td>
+								<td class="column100 column4" data-column="column4">{{resolvedCritical}}</td>
+								<td class="column100 column5" data-column="column5">{{resolvedIssues}}</td>
+							</tr>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Closed</td>
+								<td class="column100 column2" data-column="column2">{{closedMinor}}</td>
+								<td class="column100 column3" data-column="column3">{{closedMajor}}</td>
+								<td class="column100 column4" data-column="column4">{{closedCritical}}</td>
+								<td class="column100 column5" data-column="column5">{{closedIssues}}</td>
+							</tr>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Deferred</td>
+								<td class="column100 column2" data-column="column2">{{deferredMinor}}</td>
+								<td class="column100 column3" data-column="column3">{{deferredMajor}}</td>
+								<td class="column100 column4" data-column="column4">{{deferredCritical}}</td>
+								<td class="column100 column5" data-column="column5">{{defferedIssues}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!--
+				<div class="table100 ver2 m-b-110">
+					<table data-vertable="ver2">
+						<thead>
+							<tr class="row100 head">
+								<th class="column100 column1" data-column="column1">Product Name</th>
+								<th class="column100 column2" data-column="column2">Release Version</th>
+								<th class="column100 column3" data-column="column3">Current Status</th>
+								<th class="column100 column4" data-column="column4">Plan Start date</th>
+								<th class="column100 column5" data-column="column5">Plan End date</th>
+								<th class="column100 column6" data-column="column6">Remarks</th>
+								<th class="column100 column7" data-column="column7">Friday</th>
+								<th class="column100 column8" data-column="column8">Saturday</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for obj in object_list %}
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">{{obj.ProductName}}</td>
+								<td class="column100 column2" data-column="column2">{{obj.ReleaseVersion}}</td>
+								<td class="column100 column3" data-column="column3">{{obj.CurrentStatus}}</td>
+								<td class="column100 column4" data-column="column4">{{obj.PlanStartDate}}</td>
+								<td class="column100 column5" data-column="column5">{{obj.PlanEndDate}}</td>
+								<td class="column100 column6" data-column="column6">{{obj.Remarks}}</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+							{% endfor %}
+							
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Jane Medina</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Billy Mitchell</td>
+								<td class="column100 column2" data-column="column2">9:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">2:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Beverly Reid</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Tiffany Wade</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Sean Adams</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Rachel Simpson</td>
+								<td class="column100 column2" data-column="column2">9:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">2:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Mark Salazar</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				 -->
+<!--
+				<div class="table100 ver3 m-b-110">
+					<table data-vertable="ver3">
+						<thead>
+							<tr class="row100 head">
+								<th class="column100 column1" data-column="column1"></th>
+								<th class="column100 column2" data-column="column2">Sunday</th>
+								<th class="column100 column3" data-column="column3">Monday</th>
+								<th class="column100 column4" data-column="column4">Tuesday</th>
+								<th class="column100 column5" data-column="column5">Wednesday</th>
+								<th class="column100 column6" data-column="column6">Thursday</th>
+								<th class="column100 column7" data-column="column7">Friday</th>
+								<th class="column100 column8" data-column="column8">Saturday</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Lawrence Scott</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Jane Medina</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Billy Mitchell</td>
+								<td class="column100 column2" data-column="column2">9:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">2:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Beverly Reid</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Tiffany Wade</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Sean Adams</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Rachel Simpson</td>
+								<td class="column100 column2" data-column="column2">9:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">2:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Mark Salazar</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="table100 ver4 m-b-110">
+					<table data-vertable="ver4">
+						<thead>
+							<tr class="row100 head">
+								<th class="column100 column1" data-column="column1"></th>
+								<th class="column100 column2" data-column="column2">Sunday</th>
+								<th class="column100 column3" data-column="column3">Monday</th>
+								<th class="column100 column4" data-column="column4">Tuesday</th>
+								<th class="column100 column5" data-column="column5">Wednesday</th>
+								<th class="column100 column6" data-column="column6">Thursday</th>
+								<th class="column100 column7" data-column="column7">Friday</th>
+								<th class="column100 column8" data-column="column8">Saturday</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Lawrence Scott</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Jane Medina</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Billy Mitchell</td>
+								<td class="column100 column2" data-column="column2">9:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">2:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Beverly Reid</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Tiffany Wade</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Sean Adams</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Rachel Simpson</td>
+								<td class="column100 column2" data-column="column2">9:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">2:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Mark Salazar</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="table100 ver5 m-b-110">
+					<table data-vertable="ver5">
+						<thead>
+							<tr class="row100 head">
+								<th class="column100 column1" data-column="column1"></th>
+								<th class="column100 column2" data-column="column2">Sunday</th>
+								<th class="column100 column3" data-column="column3">Monday</th>
+								<th class="column100 column4" data-column="column4">Tuesday</th>
+								<th class="column100 column5" data-column="column5">Wednesday</th>
+								<th class="column100 column6" data-column="column6">Thursday</th>
+								<th class="column100 column7" data-column="column7">Friday</th>
+								<th class="column100 column8" data-column="column8">Saturday</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Lawrence Scott</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Jane Medina</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Billy Mitchell</td>
+								<td class="column100 column2" data-column="column2">9:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">2:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Beverly Reid</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Tiffany Wade</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Sean Adams</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Rachel Simpson</td>
+								<td class="column100 column2" data-column="column2">9:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">2:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Mark Salazar</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="table100 ver6 m-b-110">
+					<table data-vertable="ver6">
+						<thead>
+							<tr class="row100 head">
+								<th class="column100 column1" data-column="column1"></th>
+								<th class="column100 column2" data-column="column2">Sunday</th>
+								<th class="column100 column3" data-column="column3">Monday</th>
+								<th class="column100 column4" data-column="column4">Tuesday</th>
+								<th class="column100 column5" data-column="column5">Wednesday</th>
+								<th class="column100 column6" data-column="column6">Thursday</th>
+								<th class="column100 column7" data-column="column7">Friday</th>
+								<th class="column100 column8" data-column="column8">Saturday</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Lawrence Scott</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Jane Medina</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Billy Mitchell</td>
+								<td class="column100 column2" data-column="column2">9:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">2:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Beverly Reid</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Tiffany Wade</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Sean Adams</td>
+								<td class="column100 column2" data-column="column2">--</td>
+								<td class="column100 column3" data-column="column3">5:00 PM</td>
+								<td class="column100 column4" data-column="column4">5:00 PM</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">9:00 AM</td>
+								<td class="column100 column7" data-column="column7">--</td>
+								<td class="column100 column8" data-column="column8">--</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Rachel Simpson</td>
+								<td class="column100 column2" data-column="column2">9:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">--</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">2:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+
+							<tr class="row100">
+								<td class="column100 column1" data-column="column1">Mark Salazar</td>
+								<td class="column100 column2" data-column="column2">8:00 AM</td>
+								<td class="column100 column3" data-column="column3">--</td>
+								<td class="column100 column4" data-column="column4">--</td>
+								<td class="column100 column5" data-column="column5">8:00 AM</td>
+								<td class="column100 column6" data-column="column6">--</td>
+								<td class="column100 column7" data-column="column7">5:00 PM</td>
+								<td class="column100 column8" data-column="column8">8:00 AM</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div> -->
+			</div>
+			<small>&copy Designed By Clinical Testing Team, ArisGlobal<small>
+		</div>
+	</div>
+
+
+	
+
+<!--===============================================================================================-->	
+	<script src='{% static "vendor/jquery/jquery-3.2.1.min.js" %}'></script>
+<!--===============================================================================================-->
+	<script src='{% static "vendor/bootstrap/js/popper.js" %}'></script>
+	<script src='{% static "vendor/bootstrap/js/bootstrap.min.js" %}'></script>
+<!--===============================================================================================-->
+	<script src='{% static "vendor/select2/select2.min.js" %}'></script>
+<!--===============================================================================================-->
+	<script src='{% static "js/main.js" %}'></script>
+
+</body>
+</html>

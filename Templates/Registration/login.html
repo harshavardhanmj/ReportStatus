@@ -1,0 +1,49 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>ArisGlobal</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href='{% static "images/icons/metalogo.png" %}'/>
+<style>
+.center {
+    margin: auto;
+    width: 40%;
+    
+    padding: 100px;
+}
+</style>
+</head>
+<body>
+	<div class="center">
+		<div>
+			<div class="page-header">
+				<h2>ADMIN LOGIN</h2>
+			</div>
+		</div>
+		
+			<form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+				{% if form.errors %}
+				 <div class="alert alert-danger">
+					<strong>Invalid Username or Password !</strong>
+				  </div>
+				{% endif %}
+				<div class="form-group">
+				<label for="Username">Username:</label>
+				<input type="text" class="form-control" id="username" placeholder="Enter Username" name="username" required>
+				</div>
+				<div class="form-group">
+				<label for="pwd">Password:</label>
+				<input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
+				</div>
+				<button type="submit" class="btn btn-success">Submit</button>
+			</form>
+		
+	</div>
+</body>
+</html>
